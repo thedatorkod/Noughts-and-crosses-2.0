@@ -91,7 +91,3 @@ if who_start_first == ("The computer"):
     print("computer")
 
 while check_for_victory(boxes) == False:
-
-
-
-
