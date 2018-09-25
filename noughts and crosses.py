@@ -2,6 +2,7 @@
 
 import random
 import sys
+import time
 
 #global variables
 boxes = [[0, 0, 0],
@@ -25,7 +26,6 @@ def print_board(boxes):
     print('|'+convert_numb_to_text(boxes[2][0])+'|'+convert_numb_to_text(boxes[2][1])+'|'+convert_numb_to_text(boxes[2][2])+'|')
 
 #check for victory
-
 def check_for_victory(boxes):
     #selects in order the possible squares
     for i in range(0, 2):
@@ -48,15 +48,15 @@ def check_for_victory(boxes):
 
 #player move input
 def player_move_input():
-    player_move = input(print("to make your move enter a co-ordinate starting from top right: \n "))
-    if player_move != "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+    player_move = int(input("to make your move enter a co-ordinate starting from top right: \n"))
+    if player_move != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9:
         player_move_input()
     else:
         return(player_move)
 
 #determine who start first
 def who_start_first():
-    who_starts = random.randint(1,2)
+    who_starts = random.randint(0,1)
     if who_starts == 1:
         return("player_1")
 
@@ -76,18 +76,48 @@ def print_noughts_and_crosses():
     print("|_| \_|\___/ \__,_|\__, |_| |_|\__|___/  \__,_|_| |_|\__,_|  \___|_|  \___/|___|___/\___|___/")
     print('                    __/ | ')
     print('                    |___/')
+    for i in range (0,10):
+        print("\n")
 
 #computer
-
-#main
-print_noughts_and_crosses()
-who_start_first = who_start_first()
-print(who_start_first + "starts first")
-
-if who_start_first == ("player 1"):
-    player_move_input()
-if who_start_first == ("The computer"):
-    #computer
+def computer_move():
     print("computer")
 
+#main
+#intro
+print_noughts_and_crosses()
+who_start_first = who_start_first()
+print(who_start_first + " starts first")
+
+#initial decisions
+who_moves = ""
+if who_start_first == ("player 1"):
+    player_move_input()
+    who_moves = "The computer"
+if who_start_first == ("The computer"):
+    computer_move()
+    print("the computer is deciding")
+    who_moves = "player 1"
+    time.sleep(5)
+
+print_board(boxes)
+
 while check_for_victory(boxes) == False:
+    print_noughts_and_crosses()
+
+    if who_moves == "player 1":
+        player_move_input()
+        who_moves = "The computer"
+    else:
+        computer_move()
+        print("the computer is deciding")
+        who_moves = "player 1"
+
+    print_board(boxes)
+
+for i in range(0,5):
+    print("\n")
+
+print("congratulations" + check_for_victory(boxes))
+
+SystemExit
